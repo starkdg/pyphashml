@@ -9,7 +9,7 @@ similar images give lower distance.
 
 ## Usage
 
-###Run unit tests
+### Run unit tests
 
 ```
 python -m unittest tests.test_phashml
