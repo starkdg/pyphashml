@@ -15,20 +15,20 @@ similar images give lower distance.
 python -m unittest tests.test_phashml
 ```
 
-###Build the package
+### Build the package
 
 ```
 cd pyPhashML
 python -m build .
 ```
 
-###Install binary
+### Install binary
 
 ```
 pip install pyphashml-0.0.1-py3-none-any.whl
 ```
 
-###Calculate perceptual hash for two images and calculate distance:
+### Calculate perceptual hash for two images and calculate distance:
 
 ```
 from pyphashml.phashml import phashmlctx
@@ -40,7 +40,7 @@ d = phashmlctx.hamming_distance(x, y)
 
 x,y are bitstring objects.  d is an integer value >= 0. 
 
-###Submit perceptual hashes for a directory of images to ImageScoutPro server
+### Submit perceptual hashes for a directory of images to ImageScoutPro server
 
 ```
 python -m pyphashml.imgscoutclient --dir /path/to/img/files --key mykey --host 127.0.0.1 --port 6379 --db 0
