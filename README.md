@@ -46,6 +46,8 @@ x,y are bitstring objects.  d is an integer value >= 0.
 python -m pyphashml.imgscoutclient --dir /path/to/img/files --key mykey --host 127.0.0.1 --port 6379 --db 0
 ```
 
+### Compare two images by their perceptual hashes
+
 ```
 python3 -m pyphashml.imgcmp /path/to/img/file.jpg /path/to/img/file2.jpg
 ```
