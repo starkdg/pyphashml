@@ -29,7 +29,7 @@ def run_program():
                 if imghash is not None:
                     print("{0} {1}".format(count, file_loc))
                     reply = r.execute_command('imgscoutpro.add',
-                                              args.key, imghash, file_loc)
+                                              args.key, imghash.bytes, file_loc)
                     print("reply => ", reply)
                     count = count + 1
 

@@ -6,6 +6,11 @@ import pyphashml.resources as resources
 from bitstring import BitArray
 
 
+def check_ext(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in {'jpg', 'jpeg', 'png', 'bmp'}
+
+
 class PHashML:
 
     def __init__(self, model):
@@ -25,11 +30,10 @@ class PHashML:
         self.session = tf.Session(graph=self.graph)
 
     def imghash(self, filename):
-        if os.path.isfile(filename) and filename.endswith('.jpg'):
+        if os.path.isfile(filename) and check_ext(filename):
             imgdata = self.session.run(self.file_out,
                                        feed_dict={self.file_in: filename})
 
-        if imgdata is not None:
             fv = self.session.run(self.output, feed_dict={self.input: imgdata})
 
             median_val = np.median(fv[0])
@@ -39,7 +43,6 @@ class PHashML:
                     imghash.set(True, i)
                 else:
                     imghash.set(False, i)
-
             return imghash
 
     def hamming_distance(self, x, y):
@@ -47,5 +50,5 @@ class PHashML:
         return x.count(1)
 
 
-model = pkg_resources.open_binary(resources, 'mobilenetv2_deepaec_1792to256_combined.pb')
-phashmlctx = PHashML(model)
+
+phashmlctx = PHashML(pkg_resources.open_binary(resources, 'mobilenetv2_deepaec_1792to256_combined.pb'))
