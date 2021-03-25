@@ -1,1 +1,2 @@
-
+recursive-include imgscout/templates *
+recursive-include imgscout/static *

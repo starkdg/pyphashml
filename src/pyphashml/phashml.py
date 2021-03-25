@@ -4,6 +4,7 @@ import tensorflow as tf
 import importlib.resources as pkg_resources
 import pyphashml.resources as resources
 from bitstring import BitArray
+import threading
 
 
 def check_ext(filename):
@@ -13,42 +14,48 @@ def check_ext(filename):
 
 class PHashML:
 
-    def __init__(self, model):
+    __lock = threading.Lock()
 
         # with tf.gfile.GFile(model_file, 'rb') as f:
-        self.classif_graph_def = tf.GraphDef()
-        self.classif_graph_def.ParseFromString(model.read())
+    classif_graph_def = tf.GraphDef()
+    classif_graph_def.ParseFromString(
+        pkg_resources.open_binary(
+            resources, 'mobilenetv2_deepaec_1792to256_combined.pb').read())
 
-        self.graph = tf.Graph()
-        with self.graph.as_default():
-            tf.graph_util.import_graph_def(self.classif_graph_def, name="aec")
+    graph = tf.Graph()
+    with graph.as_default():
+        tf.graph_util.import_graph_def(classif_graph_def, name="aec")
 
-        self.file_in = self.graph.get_tensor_by_name('aec/preprocess/input:0')
-        self.file_out = self.graph.get_tensor_by_name('aec/preprocess/output:0')
-        self.input = self.graph.get_tensor_by_name('aec/classifier/input:0')
-        self.output = self.graph.get_tensor_by_name('aec/aec_encoder/output256:0')
-        self.session = tf.Session(graph=self.graph)
+    file_in = graph.get_tensor_by_name('aec/preprocess/input:0')
+    file_out = graph.get_tensor_by_name('aec/preprocess/output:0')
+    input = graph.get_tensor_by_name('aec/classifier/input:0')
+    output = graph.get_tensor_by_name('aec/aec_encoder/output256:0')
+    session = tf.Session(graph=graph)
+
+    def __init__(self):
+        pass
 
     def imghash(self, filename):
-        if os.path.isfile(filename) and check_ext(filename):
-            imgdata = self.session.run(self.file_out,
-                                       feed_dict={self.file_in: filename})
 
-            fv = self.session.run(self.output, feed_dict={self.input: imgdata})
+        with PHashML.__lock:
+            if os.path.isfile(filename) and check_ext(filename):
+                imgdata = self.session.run(self.file_out,
+                                           feed_dict={self.file_in: filename})
 
-            median_val = np.median(fv[0])
-            imghash = BitArray(length=256)
-            for i in range(256):
-                if fv[0][i] >= median_val:
-                    imghash.set(True, i)
-                else:
-                    imghash.set(False, i)
-            return imghash
+                fv = self.session.run(self.output, feed_dict={self.input: imgdata})
+
+                median_val = np.median(fv[0])
+                imghash = BitArray(length=256)
+                for i in range(256):
+                    if fv[0][i] >= median_val:
+                        imghash.set(True, i)
+                    else:
+                        imghash.set(False, i)
+                return imghash
 
     def hamming_distance(self, x, y):
         x ^= y
         return x.count(1)
 
 
-
-phashmlctx = PHashML(pkg_resources.open_binary(resources, 'mobilenetv2_deepaec_1792to256_combined.pb'))
+phashmlctx = PHashML()
