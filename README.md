@@ -1,3 +1,4 @@
+![banner](phashml.png)
 # pHashML package
 
 Python package to compute image perceptual hashes.  The
