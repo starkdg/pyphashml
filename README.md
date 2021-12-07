@@ -1,4 +1,6 @@
-![banner](phashml.png)
+<p align="center">
+   <img src="phashml.png"/>
+</p>
 # pHashML package
 
 Python package to compute image perceptual hashes.  The
