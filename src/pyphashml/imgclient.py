@@ -24,13 +24,21 @@ def run_program():
             file_loc = os.path.join(subdir, name)
 
             if file_loc.endswith('.jpg') or file_loc.endswith('.jpeg'):
-                imghash = phashmlctx.imghash(file_loc)
 
-                if imghash is not None:
-                    print("{0} {1}".format(count, file_loc))
-                    reply = r.execute_command('imgscoutpro.add', args.key, imghash.bytes, file_loc)
-                    print("id => ", reply)
-                    count = count + 1
+                try:
+                    imghash = phashmlctx.imghash(file_loc)
+
+                    if imghash is not None:
+                        print("{0} {1}".format(count, file_loc))
+                        reply = r.execute_command('imgscoutpro.add', args.key, imghash.bytes, file_loc)
+                        print("id => ", reply)
+                        count = count + 1
+
+                except Exception as ex:
+                    print(type(ex))
+                    print(ex.args)
+                    print(ex)
+                    continue
 
     r.close()
     print("{0} images submitted".format(count))

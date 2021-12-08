@@ -1,0 +1,16 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.cfg
+src/pyphashml/__init__.py
+src/pyphashml/imgclient.py
+src/pyphashml/imgcmp.py
+src/pyphashml/phashml.py
+src/pyphashml.egg-info/PKG-INFO
+src/pyphashml.egg-info/SOURCES.txt
+src/pyphashml.egg-info/dependency_links.txt
+src/pyphashml.egg-info/not-zip-safe
+src/pyphashml.egg-info/requires.txt
+src/pyphashml.egg-info/top_level.txt
+src/pyphashml/resources/__init__.py
+src/pyphashml/resources/mobilenetv2_deepaec_1792to256_combined.pb

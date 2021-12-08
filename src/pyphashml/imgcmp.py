@@ -11,11 +11,12 @@ def run_program():
             imghash1 = phashmlctx.imghash(file1)
             imghash2 = phashmlctx.imghash(file2)
 
-            d = phashmlctx.hamming_distance(imghash1, imghash2)
-
+            if imghash1 is not None and imghash2 is not None:
+                d = phashmlctx.hamming_distance(imghash1, imghash2)
             print("file: ", file1)
             print("file: ", file2)
             print("distance = ", d)
+
         except Exception:
             print("Error: unable to complete operation")
         else:

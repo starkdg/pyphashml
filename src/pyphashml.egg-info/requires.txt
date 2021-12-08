@@ -1,0 +1,4 @@
+bitstring>=3
+numpy>=1.19
+tensorflow<2,>=1.14
+redis>=3

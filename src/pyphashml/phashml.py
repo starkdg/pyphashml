@@ -39,19 +39,19 @@ class PHashML:
 
         with PHashML.__lock:
             if os.path.isfile(filename) and check_ext(filename):
-                imgdata = self.session.run(self.file_out,
-                                           feed_dict={self.file_in: filename})
-
-                fv = self.session.run(self.output, feed_dict={self.input: imgdata})
-
-                median_val = np.median(fv[0])
-                imghash = BitArray(length=256)
-                for i in range(256):
-                    if fv[0][i] >= median_val:
-                        imghash.set(True, i)
-                    else:
-                        imghash.set(False, i)
-                return imghash
+                imgdata = self.session.run(self.file_out, feed_dict={self.file_in: filename})
+                if imgdata is not None:
+                    fv = self.session.run(self.output, feed_dict={self.input: imgdata})
+                    if fv is not None:
+                        median_val = np.median(fv[0])
+                        imghash = BitArray(length=256)
+                        for i in range(256):
+                            if fv[0][i] >= median_val:
+                                imghash.set(True, i)
+                            else:
+                                imghash.set(False, i)
+                        return imghash
+        return None
 
     def hamming_distance(self, x, y):
         x ^= y
