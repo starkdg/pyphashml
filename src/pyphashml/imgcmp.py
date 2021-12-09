@@ -1,26 +1,27 @@
+import argparse
 from pyphashml.phashml import phashmlctx
-import sys
+from pyphashml.phashml import phashml_distance
 
 
 def run_program():
-    if len(sys.argv) == 2:
-        file1 = sys.argv[0]
-        file2 = sys.argv[1]
 
-        try:
-            imghash1 = phashmlctx.imghash(file1)
-            imghash2 = phashmlctx.imghash(file2)
+    parser = argparse.ArgumentParser(description="pHashML Image Compare")
+    parser.add_argument('imgfileA', help="first image file")
+    parser.add_argument('imgfileB', help="second image file")
+    args = parser.parse_args()
 
-            if imghash1 is not None and imghash2 is not None:
-                d = phashmlctx.hamming_distance(imghash1, imghash2)
-            print("file: ", file1)
-            print("file: ", file2)
+    try:
+        imghash1 = phashmlctx.image_hash(args.imgfileA)
+        imghash2 = phashmlctx.image_hash(args.imgfileB)
+
+        if imghash1 is not None and imghash2 is not None:
+            d = phashml_distance(imghash1, imghash2)
+            print("file: ", args.imgfileA)
+            print("file: ", args.imgfileB)
             print("distance = ", d)
-
-        except Exception:
-            print("Error: unable to complete operation")
-        else:
-            print("Done")
+    except Exception:
+        print("Error: unable to complete operation")
+    print("Done.")
 
 
 if __name__ == '__main__':
