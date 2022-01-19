@@ -11,23 +11,10 @@ similar images give lower distance.
 
 ## Usage
 
-### Run unit tests
+### Try it out
 
 ```
-python -m unittest tests.test_phashml
-```
-
-### Build the package
-
-```
-cd pyPhashML
-python -m build .
-```
-
-### Install binary
-
-```
-pip install pyphashml-0.0.1-py3-none-any.whl
+pip install pyphashml
 ```
 
 ### Calculate perceptual hash for two images and calculate distance:
