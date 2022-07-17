@@ -21,10 +21,11 @@ pip install pyphashml
 
 ```
 from pyphashml.phashml import phashmlctx
+from pyphashml.phashml import phashml_distance
 
-x = phashmlctx.imghash("/path/to/imgfile.jpg")
-y = phashmlctx.imghash("/path/to/imgfile2.jpg")
-d = phashmlctx.hamming_distance(x, y)
+x = phashmlctx.image_hash("/path/to/imgfile.jpg")
+y = phashmlctx.image_hash("/path/to/imgfile2.jpg")
+d = phashmlctx.phashml_distance(x, y)
 ```
 
 x,y are bitstring objects.  d is an integer value >= 0. 
